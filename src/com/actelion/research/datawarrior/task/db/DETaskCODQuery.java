@@ -280,7 +280,7 @@ public class DETaskCODQuery extends DETaskStructureQuery implements CODServerCon
 
 	@Override
 	protected void prepareStructureColumns(CompoundTableModel tableModel) {
-		tableModel.prepareStructureColumns(RESULT_COLUMN_IDCODE, "Structure", true, true);
+		tableModel.prepareStructureColumns(RESULT_COLUMN_IDCODE, "Structure", false, true, true);
 		tableModel.setColumnProperty(RESULT_COLUMN_IDCODE, CompoundTableConstants.cColumnPropertyRelatedIdentifierColumn, RESULT_COLUMN_NAME_COD_NO);
 		tableModel.setColumnName(CompoundTableConstants.cColumnType3DCoordinates, RESULT_COLUMN_COORDS3D);
 		tableModel.setColumnProperty(RESULT_COLUMN_COORDS3D, CompoundTableConstants.cColumnPropertySpecialType, CompoundTableConstants.cColumnType3DCoordinates);

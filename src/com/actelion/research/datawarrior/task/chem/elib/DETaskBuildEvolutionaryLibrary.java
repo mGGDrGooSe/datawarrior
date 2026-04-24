@@ -777,7 +777,7 @@ public class DETaskBuildEvolutionaryLibrary extends AbstractTask implements Acti
 		CompoundTableModel tableModel = mTargetFrame.getTableModel();
 		tableModel.initializeTable(result.length, 2+columnNameList.size());
 
-		tableModel.prepareStructureColumns(0, "Structure", false, true);
+		tableModel.prepareStructureColumns(0, "Structure", false, false, true);
 		int column = 2;
 		for (String columnName:columnNameList)
 			tableModel.setColumnName(columnName, column++);

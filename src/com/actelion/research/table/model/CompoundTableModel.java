@@ -774,7 +774,7 @@ public class CompoundTableModel extends AbstractTableModel
 			byte[] newCoords = null;
 			byte[] newColors = null;
 			if (mol.getAllAtoms() != 0) {
-				Canonizer canonizer = new Canonizer(mol);
+				Canonizer canonizer = new Canonizer(mol, Canonizer.ENCODE_ATOM_CUSTOM_LABELS);
 				newIDCode = canonizer.getIDCode().getBytes();
 				newCoords = canonizer.getEncodedCoordinates().getBytes();
 				int colorInfoColumn = getChildColumn(column, CompoundTableConstants.cColumnTypeAtomColorInfo);
@@ -1741,18 +1741,20 @@ public class CompoundTableModel extends AbstractTableModel
 		return specialColumn;
 		}
 
-	public int prepareStructureColumns(int idcodeColumn, String idcodeColumnName,
+	public int prepareStructureColumns(int idcodeColumn, String idcodeColumnName, boolean isFragment,
 										boolean prepareCoordinates, boolean prepareFFP512) {
-		return prepareStructureColumns(idcodeColumn, idcodeColumnName, prepareCoordinates,
+		return prepareStructureColumns(idcodeColumn, idcodeColumnName, isFragment, prepareCoordinates,
 								prepareFFP512 ? DESCRIPTOR_FFP512.shortName : null);
 		}
 
-	public int prepareStructureColumns(int idcodeColumn, String idcodeColumnName,
+	public int prepareStructureColumns(int idcodeColumn, String idcodeColumnName, boolean isFragment,
 			boolean prepareCoordinates, String descriptorShortName) {
 		int column = idcodeColumn;
 
 		setColumnName(idcodeColumnName, column);
 		setColumnProperty(column, cColumnPropertySpecialType, cColumnTypeIDCode);
+		if (isFragment)
+			setColumnProperty(column, cColumnPropertyIsFragment, "true");
 		column++;
 
 		if (prepareCoordinates) {

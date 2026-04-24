@@ -349,7 +349,7 @@ public class DETaskBuild3DFragmentLibrary extends ConfigurableTask {
 
 			CompoundTableModel tableModel = mTargetFrame.getTableModel();
 			tableModel.initializeTable(fragmentSet.size(), 4+(idColumn == -1 ? 0 : 1));
-			tableModel.prepareStructureColumns(0, FRAGMENT_COLUMN_NAME, false, true);
+			tableModel.prepareStructureColumns(0, FRAGMENT_COLUMN_NAME, false, false, true);
 
 			tableModel.setColumnName(CompoundTableConstants.cColumnType3DCoordinates, 2);
 			tableModel.setColumnProperty(2, CompoundTableConstants.cColumnPropertySpecialType, CompoundTableConstants.cColumnType3DCoordinates);

@@ -107,7 +107,7 @@ public class DETaskRetrieveWikipediaCompounds extends AbstractTaskWithoutConfigu
 			CompoundTableModel tableModel = mTargetFrame.getTableModel();
 		    int columnCount = COLUMN_NAME.length + 3;
 			tableModel.initializeTable(rowList.size(), columnCount);
-            tableModel.prepareStructureColumns(0, "Structure", true, true);
+            tableModel.prepareStructureColumns(0, "Structure", false, true, true);
         	tableModel.setColumnProperty(0, CompoundTableModel.cColumnPropertyRelatedIdentifierColumn, COLUMN_NAME[1]);
 			for (int i=3; i<columnCount; i++)
 				tableModel.setColumnName(COLUMN_NAME[i-3], i);

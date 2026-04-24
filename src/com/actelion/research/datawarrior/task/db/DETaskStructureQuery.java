@@ -822,7 +822,7 @@ public abstract class DETaskStructureQuery extends ConfigurableTask implements A
 	 * does not contain the default structure columns idcode,2D-coords,fragFp.
 	 */
 	protected void prepareStructureColumns(CompoundTableModel tableModel) {
-		tableModel.prepareStructureColumns(0, "Structure", true, true);
+		tableModel.prepareStructureColumns(0, "Structure", false, true, true);
 		}
 
 	/**

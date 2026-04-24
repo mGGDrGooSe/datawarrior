@@ -167,7 +167,7 @@ public class DETaskAddChemistryFromName extends AbstractSingleColumnTask {
 		if (isReactionSmiles)
 			getTableModel().prepareReactionColumns(idcodeColumn, "Reaction", isSmarts, true, true, catalystsFound[0], true, true, true, catalystsFound[0]);
 		else
-			getTableModel().prepareStructureColumns(idcodeColumn, "Structure", true, true);
+			getTableModel().prepareStructureColumns(idcodeColumn, "Structure", isSmarts, true, true);
 
 		NameToStructure opsinN2S = NameToStructure.getInstance();
 		StereoMolecule mol = new StereoMolecule();

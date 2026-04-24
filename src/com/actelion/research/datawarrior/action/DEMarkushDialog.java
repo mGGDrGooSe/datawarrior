@@ -221,7 +221,7 @@ e.printStackTrace();
 
         CompoundTableModel tableModel = mTargetFrame.getTableModel();
         tableModel.initializeTable(rowCount, columnCount);
-        tableModel.prepareStructureColumns(0, "Structure", true, true);
+        tableModel.prepareStructureColumns(0, "Structure", false, true, true);
 
         int row = 0;
         for (Object[] record:recordList) {

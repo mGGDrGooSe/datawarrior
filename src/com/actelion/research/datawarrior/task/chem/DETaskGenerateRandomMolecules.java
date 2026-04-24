@@ -329,7 +329,7 @@ public class DETaskGenerateRandomMolecules extends ConfigurableTask implements C
 
 			CompoundTableModel tableModel = mTargetFrame.getTableModel();
 			tableModel.initializeTable(moleculeQueue.size(), 2);
-			tableModel.prepareStructureColumns(0, "Structure", false, true);
+			tableModel.prepareStructureColumns(0, "Structure", false, false, true);
 
 			int count = moleculeQueue.size();
 			for (int row=0; row<count; row++)

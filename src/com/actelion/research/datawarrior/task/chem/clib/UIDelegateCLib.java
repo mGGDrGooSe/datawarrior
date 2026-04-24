@@ -46,10 +46,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.dnd.DnDConstants;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -133,6 +130,7 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 	private Reaction	mCustomReaction;
 	private boolean		mDisableEvents;
 	private JStructureView[]	mReactantView;
+	private JScrollPane	mReactantScrollPane;
 	private DECompoundProvider mCompoundCollectionHelper;
 
 	public UIDelegateCLib(DEFrame parent) {
@@ -148,7 +146,7 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 
 		int gap = HiDPIHelper.scale(8);
 		double[][] size1 = { {gap, TableLayout.PREFERRED, gap, TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, gap, TableLayout.PREFERRED, gap},
-							 {gap, TableLayout.PREFERRED, 2*gap, TableLayout.PREFERRED, gap} };
+							 {gap, TableLayout.PREFERRED, TableLayout.FILL, 2*gap, TableLayout.PREFERRED, gap} };
 		JPanel editorPanel = new JPanel();
 		editorPanel.setLayout(new TableLayout(size1));
 
@@ -156,9 +154,10 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 		mol.setFragment(true);
 		mDrawPanel = new SwingEditorPanel(mol, GenericEditorArea.MODE_REACTION);
 		mDrawPanel.getDrawArea().setClipboardHandler(new ClipboardHandler());
+		mDrawPanel.setMinimumSize(new Dimension(HiDPIHelper.scale(800), HiDPIHelper.scale(EDITOR_HEIGHT)));
 		mDrawPanel.setPreferredSize(new Dimension(HiDPIHelper.scale(800), HiDPIHelper.scale(EDITOR_HEIGHT)));
 		mDrawPanel.getDrawArea().addDrawAreaListener(this);
-		editorPanel.add(mDrawPanel, "1,1,7,1");
+		editorPanel.add(mDrawPanel, "1,1,7,2");
 
 		mComboBoxReaction = new JComboBox<>();
 		mComboBoxReaction.addItem(ITEM_CUSTOM_REACTION);
@@ -166,15 +165,15 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 			mComboBoxReaction.addItem(reaction[0]);
 		mComboBoxReaction.setSelectedIndex(0);
 		mComboBoxReaction.addItemListener(this);
-		editorPanel.add(new JLabel("Use template:"), "1,3");
-		editorPanel.add(mComboBoxReaction, "3,3");
+		editorPanel.add(new JLabel("Use template:"), "1,4");
+		editorPanel.add(mComboBoxReaction, "3,4");
 
 		JButton bopen = new JButton(COMMAND_OPEN_REACTION);
 		bopen.addActionListener(this);
-		editorPanel.add(bopen, "5,3");
+		editorPanel.add(bopen, "5,4");
 		JButton bsave = new JButton(COMMAND_SAVE_REACTION);
 		bsave.addActionListener(this);
-		editorPanel.add(bsave, "7,3");
+		editorPanel.add(bsave, "7,4");
 
 		double[][] size2 = { {gap, HiDPIHelper.scale(REACTANT_WIDTH), gap, TableLayout.FILL, gap},
 							 {gap, TableLayout.PREFERRED, gap, TableLayout.PREFERRED, TableLayout.FILL} };
@@ -229,7 +228,7 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 
 	private void updateReactantPanel() {
 		Reaction reaction = mDrawPanel.getDrawArea().getReaction();
-		int reactantCount = (reaction == null) ? 0 : reaction.getReactants();
+		final int reactantCount = (reaction == null) ? 0 : reaction.getReactants();
 
 		if (mReactantPaneList.size() == reactantCount) {
 			for (int i=0; i<reactantCount; i++) {
@@ -248,13 +247,14 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 		if (reactantCount == 0)
 			return;
 
-		JPanel reactantPanel = new JPanel();
-		int gap = HiDPIHelper.scale(8);
+		final int gap = HiDPIHelper.scale(8);
+		final int reactantHeight = HiDPIHelper.scale(74);
+
 		double[] sizeH = {HiDPIHelper.scale(REACTANT_WIDTH), gap, TableLayout.FILL};
 		double[] sizeV = new double[6*reactantCount-1];
 		for (int i=0; i<reactantCount; i++) {
 			sizeV[6*i] = gap>>1;
-			sizeV[6*i+1] = HiDPIHelper.scale(74);
+			sizeV[6*i+1] = reactantHeight;
 			sizeV[6*i+2] = gap>>1;
 			sizeV[6*i+3] = TableLayout.PREFERRED;
 			sizeV[6*i+4] = gap>>1;
@@ -262,6 +262,13 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 				sizeV[6*i+5] = gap;
 			}
 		double[][] size = {sizeH, sizeV};
+		JPanel reactantPanel = new JPanel() {
+			@Override public Dimension getPreferredSize() {
+				int width = mReactantScrollPane == null ? 3 * REACTANT_WIDTH : Math.max(3 * REACTANT_WIDTH, mReactantScrollPane.getWidth() - HiDPIHelper.scale(16));
+				int height = super.getPreferredSize().height;
+				return new Dimension(width, height);
+			}
+		};
 		reactantPanel.setLayout(new TableLayout(size));
 
 		for (int i=0; i<reactantCount; i++) {
@@ -310,16 +317,26 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 
 			mReactantPaneList.add(reactantPane);
 			reactantPanel.add(reactantPane, "2,"+(6*i)+",2,"+(6*i+4));
-			}
+		}
 
-		if (reactantCount <= 3)
-			mReactantPanel.add(reactantPanel, "1,1,3,1");
-		else {
-			JScrollPane scrollPane = new JScrollPane(reactantPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-																	JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, HiDPIHelper.scale(EDITOR_HEIGHT)));
-			mReactantPanel.add(scrollPane, "1,1,3,1");
+		mReactantScrollPane = new JScrollPane(reactantPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+															 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
+			@Override public Dimension getPreferredSize() {
+				int width = super.getPreferredSize().width;
+				int height = Math.min(mDrawPanel.getHeight(), reactantPanel.getHeight());
+				// the draw panel occupies the first tab's full height minus a button height and two gaps.
+				// That is about the needed height, We need to define a preferred height, because otherwise
+				// the scollpane would use the height of its content and wouldn't fit into the tabbed pane.
+				return new Dimension(width, height);
 			}
+		};
+		mReactantScrollPane.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				reactantPanel.revalidate();
+				reactantPanel.repaint();
+			}
+		});
+		mReactantPanel.add(mReactantScrollPane, "1,1,3,1");
 		mReactantPanel.validate();
 		}
 
@@ -498,8 +515,6 @@ public class UIDelegateCLib implements ActionListener,ChangeListener, GenericEve
 		try {
 			if (rxn.getReactants() < 1)
 				throw new Exception("For combinatorial enumeration you need at least one reactant.");
-			if (rxn.getReactants() > 4)
-				throw new Exception("Combinatorial enumeration is limited to a maximum of 4 reactants.");
 			if (rxn.getProducts() == 0)
 				throw new Exception("No product defined.");
 			rxn.validateMapping();

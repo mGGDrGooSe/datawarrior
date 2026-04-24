@@ -241,10 +241,10 @@ public class DETaskEnumerateCombinatorialLibrary extends AbstractTask implements
 
 		CompoundTableModel tableModel = mTargetFrame.getTableModel();
 		tableModel.initializeTable(recordList.size(), 3+3*reaction.getReactants());
-		tableModel.prepareStructureColumns(0, "Product", true, true);
+		tableModel.prepareStructureColumns(0, "Product", false, true, true);
 		for (int i=0; i<reaction.getReactants(); i++) {
 			tableModel.setColumnName("Reactant-ID "+(i+1), 3+i);
-			tableModel.prepareStructureColumns(3+reaction.getReactants()+2*i, "Reactant "+(i+1), true, false);
+			tableModel.prepareStructureColumns(3+reaction.getReactants()+2*i, "Reactant "+(i+1), false, true, false);
 		}
 
 		int row = 0;

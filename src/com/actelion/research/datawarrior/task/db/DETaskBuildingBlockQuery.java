@@ -457,7 +457,7 @@ public class DETaskBuildingBlockQuery extends DETaskStructureQuery implements BB
 
 	@Override
 	protected void prepareStructureColumns(CompoundTableModel tableModel) {
-		tableModel.prepareStructureColumns(RESULT_COLUMN_IDCODE, "Structure", true, true);
+		tableModel.prepareStructureColumns(RESULT_COLUMN_IDCODE, "Structure", false, true, true);
 		tableModel.setColumnProperty(RESULT_COLUMN_IDCODE, CompoundTableConstants.cColumnPropertyRelatedIdentifierColumn, RESULT_COLUMN_NAME_BB_NO);
 	}
 

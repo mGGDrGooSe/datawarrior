@@ -905,7 +905,7 @@ public class DETaskFindSimilarCompoundsInFile extends ConfigurableTask implement
 		mTableModel.setColumnName(matchCountColumnName, matchCountColumn);
 		if (maxSimilarityColumn != -1)
 			mTableModel.setColumnName(maxSimilarityColumnName, maxSimilarityColumn);
-		mTableModel.prepareStructureColumns(structureColumn, structureColumnName, coordsAvailable, false);
+		mTableModel.prepareStructureColumns(structureColumn, structureColumnName, false, coordsAvailable, false);
 		for (int i=0; i<alphaNumColumnCount; i++) {
 			String columnName = parser.getFieldNames()[sourceColumn[i]];
 			mTableModel.setColumnName(columnName, firstNewAlphaNumColumn+i);
