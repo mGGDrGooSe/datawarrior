@@ -907,8 +907,8 @@ public class DETaskAnalyseActivityCliffs extends ConfigurableTask implements Ite
 			mTargetFrame = mApplication.getEmptyFrame("Activity-Cliff Analysis");
 			CompoundTableModel targetTableModel = mTargetFrame.getTableModel();
 			targetTableModel.initializeTable(mPairList.size(), 2 * structureColumnCount + dataColumnCount);
-			targetTableModel.prepareStructureColumns(0, "Structure 1", prepareCoordinates, descriptorShortName);
-			targetTableModel.prepareStructureColumns(structureColumnCount, "Structure 2", prepareCoordinates, descriptorShortName);
+			targetTableModel.prepareStructureColumns(0, "Structure 1", false, prepareCoordinates, descriptorShortName);
+			targetTableModel.prepareStructureColumns(structureColumnCount, "Structure 2", false, prepareCoordinates, descriptorShortName);
 			int column = 2 * structureColumnCount;
 			targetTableModel.setColumnName("ID 1", column++);
 			targetTableModel.setColumnName("ID 2", column++);

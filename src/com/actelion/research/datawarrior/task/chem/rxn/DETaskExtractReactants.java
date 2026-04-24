@@ -99,7 +99,7 @@ public class DETaskExtractReactants extends DETaskAbstractFromReaction {
 	protected void setNewColumnProperties(int firstNewColumn) {
 		String sourceColumnName = getTableModel().getColumnTitle(getChemistryColumn());
 		String descriptorName = mCreateFFP ? DescriptorConstants.DESCRIPTOR_FFP512.shortName : null;
-		getTableModel().prepareStructureColumns(firstNewColumn, "Reactants of " + sourceColumnName, true, descriptorName);
+		getTableModel().prepareStructureColumns(firstNewColumn, "Reactants of " + sourceColumnName, false, true, descriptorName);
 		}
 
 	@Override

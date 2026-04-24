@@ -99,7 +99,7 @@ public class DETaskExtractCatalysts extends DETaskAbstractFromReaction {
 	protected void setNewColumnProperties(int firstNewColumn) {
 		String sourceColumnName = getTableModel().getColumnTitle(getChemistryColumn());
 		String descriptorName = mCreateFFP ? DescriptorConstants.DESCRIPTOR_FFP512.shortName : null;
-		getTableModel().prepareStructureColumns(firstNewColumn, "Catalysts of " + sourceColumnName, true, descriptorName);
+		getTableModel().prepareStructureColumns(firstNewColumn, "Catalysts of " + sourceColumnName, false, true, descriptorName);
 		}
 
 	@Override
