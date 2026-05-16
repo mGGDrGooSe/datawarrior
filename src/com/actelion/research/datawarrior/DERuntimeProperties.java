@@ -81,12 +81,18 @@ public class DERuntimeProperties extends RuntimeProperties {
 	private static final String cMainViewInFront = "mainViewInFront";
 	private static final String cDetailView = "detailView";
 	private static final String cMolViewerBackgroundColor = "fxmvBackgroundColor";
+	private static final String cMolViewerOverlayMolConstructionMode = "fxmvOverlayMolConstructionMode";
+	private static final String cMolViewerOverlayMolHydrogenMode = "fxmvOverlayMolHydrogenMode";
 	private static final String cMolViewerOverlayMolColor = "fxmvOverlayMolColor";
+	private static final String cMolViewerRefMolConstructionMode = "fxmvRefMolConstructionMode";
+	private static final String cMolViewerRefMolHydrogenMode = "fxmvRefMolHydrogenMode";
 	private static final String cMolViewerRefMolColor = "fxmvRefMolColor";
 	private static final String cMolViewerRefMolSurfaceMode = "fxmvRefMolSurfaceMode";
 	private static final String cMolViewerRefMolSurfaceColorMode = "fxmvRefMolSurfaceColorMode";
 	private static final String cMolViewerRefMolSurfaceColor = "fxmvRefMolSurfaceColor";
 	private static final String cMolViewerRefMolSurfaceTransparency = "fxmvRefMolSurfaceTransparency";
+	private static final String cMolViewerSingleConformerConstructionMode = "fxmvSingleConformerConstructionMode";
+	private static final String cMolViewerSingleConformerHydrogenMode = "fxmvSingleConformerHydrogenMode";
 	private static final String cMolViewerSingleConformerColor = "fxmvSingleConformerColor";
 	private static final String cMolViewerSingleConformerSurfaceMode = "fxmvSingleConformerSurfaceMode";
 	private static final String cMolViewerSingleConformerSurfaceColorMode = "fxmvSingleConformerSurfaceColorMode";
@@ -102,6 +108,7 @@ public class DERuntimeProperties extends RuntimeProperties {
 	private static final String cMolViewerCavitySurfaceColor = "fxmvCavitySurfaceColor";
 	private static final String cMolViewerCavitySurfaceTransparency = "fxmvCavitySurfaceTransparency";
 	private static final String cMolViewerGeometry = "fxmvGeometry";
+	private static final String cMolViewerInteractionType = "fxmvInteractionType";
 	private static final String cMolViewerIsAnimate = "fxmvIsAnimate";
 	private static final String cTableRowHeight = "rowHeight";
 	private static final String cTableHeaderLines = "headerLines";
@@ -451,9 +458,21 @@ public class DERuntimeProperties extends RuntimeProperties {
 				String backgroundColor = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerBackgroundColor);
 				if (backgroundColor != null)
 					panel3D.setBackgroundColor(backgroundColor);
+				int overlayMolConstructionMode = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerOverlayMolConstructionMode, MoleculeArchitect.CONSTRUCTION_MODE_CODE);
+				if (overlayMolConstructionMode != -1)
+					panel3D.setOverlayMolConstructionMode(overlayMolConstructionMode);
+				int overlayMolHydrogenMode = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerOverlayMolHydrogenMode, MoleculeArchitect.HYDROGEN_MODE_CODE);
+				if (overlayMolHydrogenMode != -1)
+					panel3D.setOverlayMolHydrogenMode(overlayMolHydrogenMode);
 				String overlayColor = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerOverlayMolColor);
 				if (overlayColor != null)
 					panel3D.setOverlayMolColor(overlayColor);
+				int refMolConstructionMode = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolConstructionMode, MoleculeArchitect.CONSTRUCTION_MODE_CODE);
+				if (refMolConstructionMode != -1)
+					panel3D.setRefMolConstructionMode(refMolConstructionMode);
+				int refMolHydrogenMode = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolHydrogenMode, MoleculeArchitect.HYDROGEN_MODE_CODE);
+				if (refMolHydrogenMode != -1)
+					panel3D.setRefMolHydrogenMode(refMolHydrogenMode);
 				String refMolColor = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolColor);
 				if (refMolColor != null)
 					panel3D.setRefMolColor(refMolColor);
@@ -469,6 +488,12 @@ public class DERuntimeProperties extends RuntimeProperties {
 				String refMolSurfaceTransparency = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolSurfaceTransparency);
 				if (refMolSurfaceTransparency != null)
 					panel3D.setRefMolSurfaceTransparency(Double.parseDouble(refMolSurfaceTransparency));
+				int confConstructionMode = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerConstructionMode, MoleculeArchitect.CONSTRUCTION_MODE_CODE);
+				if (confConstructionMode != -1)
+					panel3D.setSingleConformerConstructionMode(confConstructionMode);
+				int confHydrogenMode = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerHydrogenMode, MoleculeArchitect.HYDROGEN_MODE_CODE);
+				if (confHydrogenMode != -1)
+					panel3D.setSingleConformerHydrogenMode(confHydrogenMode);
 				String confColor = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerColor);
 				if (confColor != null)
 					panel3D.setSingleConformerColor(confColor);
@@ -514,6 +539,9 @@ public class DERuntimeProperties extends RuntimeProperties {
 				String geometry = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerGeometry);
 				if (geometry != null)
 					panel3D.setGeometry(geometry);
+				int interactionType = decodeProperty(cDetailView+"_"+column3DName+"_"+cMolViewerInteractionType, V3DScene.INTERACTION_CODE);
+				if (interactionType != -1)
+					panel3D.setInteractionType(interactionType);
 				String animation = getProperty(cDetailView+"_"+column3DName+"_"+cMolViewerIsAnimate);
 				// to be compatible with original boolean...
 				if (animation == null || "false".equals(animation))
@@ -1990,9 +2018,17 @@ public class DERuntimeProperties extends RuntimeProperties {
 				String backgroundColor = panel3D.getBackgroundColor();
 				if (backgroundColor != null)
 					setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerBackgroundColor, backgroundColor);
+				int overlayMolConstructionMode = panel3D.getOverlayMolConstructionMode();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerOverlayMolConstructionMode, MoleculeArchitect.CONSTRUCTION_MODE_CODE[overlayMolConstructionMode]);
+				int overlayMolHydrogenMode = panel3D.getOverlayMolHydrogenMode();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerOverlayMolHydrogenMode, MoleculeArchitect.HYDROGEN_MODE_CODE[overlayMolHydrogenMode]);
 				String overlayColor = panel3D.getOverlayMolColor();
 				if (overlayColor != null)
 					setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerOverlayMolColor, overlayColor);
+				int confConstructionMode = panel3D.getSingleConformerConstructionMode();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerConstructionMode, MoleculeArchitect.CONSTRUCTION_MODE_CODE[confConstructionMode]);
+				int confHydrogenMode = panel3D.getSingleConformerHydrogenMode();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerHydrogenMode, MoleculeArchitect.HYDROGEN_MODE_CODE[confHydrogenMode]);
 				String confColor = panel3D.getSingleConformerColor();
 				if (confColor != null)
 					setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerColor, confColor);
@@ -2005,6 +2041,10 @@ public class DERuntimeProperties extends RuntimeProperties {
 				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerSurfaceColorMode, SurfaceMesh.SURFACE_COLOR_MODE_CODE[confSurfaceColorMode]);
 				double confSurfaceTransparency = panel3D.getSingleConformerSurfaceTransparency();
 				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerSingleConformerSurfaceTransparency, DoubleFormat.toString(confSurfaceTransparency));
+				int refMolConstructionMode = panel3D.getRefMolConstructionMode();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolConstructionMode, MoleculeArchitect.CONSTRUCTION_MODE_CODE[refMolConstructionMode]);
+				int refMolHydrogenMode = panel3D.getRefMolHydrogenMode();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolHydrogenMode, MoleculeArchitect.HYDROGEN_MODE_CODE[refMolHydrogenMode]);
 				String refMolColor = panel3D.getRefMolColor();
 				if (refMolColor != null)
 					setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerRefMolColor, refMolColor);
@@ -2040,6 +2080,8 @@ public class DERuntimeProperties extends RuntimeProperties {
 				String geometry = panel3D.getGeometry();
 				if (geometry != null)
 					setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerGeometry, geometry);
+				int interactionType = panel3D.getInteractionType();
+				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerInteractionType, V3DScene.INTERACTION_CODE[interactionType]);
 				setProperty(cDetailView+"_"+column3DName+"_"+cMolViewerIsAnimate, V3DScene.ANIMATION_CODE[panel3D.getAnimationMode()]);
 				}
 			}

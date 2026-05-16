@@ -38,6 +38,7 @@ import com.actelion.research.table.JDetailTable;
 import com.actelion.research.table.model.*;
 import com.actelion.research.table.view.VisualizationColor;
 import org.openmolecules.fx.viewer3d.V3DScene;
+import org.openmolecules.render.MoleculeArchitect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -230,8 +231,15 @@ public class DEDetailPane extends JMultiPanelView implements HighlightListener,C
 				continue;
 			}
 			if (CompoundTableModel.cColumnType3DCoordinates.equals(specialType)) {
+				String cavity = mTableModel.getColumnProperty(column, CompoundTableConstants.cColumnPropertyProteinCavity);
+				StereoMolecule cavityMol = (cavity == null) ? null : new IDCodeParserWithoutCoordinateInvention().getCompactMolecule(cavity);
+
 				final JFXMolViewerPanel view = new JFXMolViewerPanel(false, V3DScene.CONFORMER_VIEW_MODE);
 				view.adaptToLookAndFeelChanges();
+				view.setSingleConformerHydrogenMode(cavityMol == null ? MoleculeArchitect.HYDROGEN_MODE_ALL : MoleculeArchitect.HYDROGEN_MODE_NONE);
+				view.setRefMolHydrogenMode(cavityMol == null ? MoleculeArchitect.HYDROGEN_MODE_ALL : MoleculeArchitect.HYDROGEN_MODE_NONE);
+				view.setOverlayMolHydrogenMode(cavityMol == null ? MoleculeArchitect.HYDROGEN_MODE_ALL : MoleculeArchitect.HYDROGEN_MODE_NONE);
+
 				String overlay = mTableModel.getColumnProperty(column, CompoundTableConstants.cColumnPropertySuperposeMolecule);
 				StereoMolecule overlayMol = (overlay == null) ? null : new IDCodeParserWithoutCoordinateInvention().getCompactMolecule(overlay);
 				if (overlayMol != null) {
@@ -239,8 +247,6 @@ public class DEDetailPane extends JMultiPanelView implements HighlightListener,C
 					view.setOverlayMolecule(overlayMol, true);
 					}
 
-				String cavity = mTableModel.getColumnProperty(column, CompoundTableConstants.cColumnPropertyProteinCavity);
-				StereoMolecule cavityMol = (cavity == null) ? null : new IDCodeParserWithoutCoordinateInvention().getCompactMolecule(cavity);
 				boolean showLigand = !"false".equals(mTableModel.getColumnProperty(column, CompoundTableConstants.cColumnPropertyShowNaturalLigand));
 				String ligand = showLigand ? mTableModel.getColumnProperty(column, CompoundTableConstants.cColumnPropertyNaturalLigand) : null;
 				StereoMolecule ligandMol = (ligand == null) ? null : new IDCodeParserWithoutCoordinateInvention().getCompactMolecule(ligand);
