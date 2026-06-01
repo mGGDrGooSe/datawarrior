@@ -1,0 +1,22 @@
+# coverage
+coverage/
+
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+.env.local
+.venv
+
+# Misc files
+.DS_Store
+ToDo.md
+Dev.code-workspace
+
+# notes
+devNotes.md
+.ToDo
+
+# Claude files
+.claude/

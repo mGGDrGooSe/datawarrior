@@ -1,9 +1,8 @@
 # runDataWarrior.ps1 - Run DataWarrior on Windows with custom memory allocation
-# Usage: ./runDataWarrior.ps1 -MaxMemory 16g
-# Example: ./runDataWarrior.ps1 -MaxMemory 32g
+# Usage: ./runDataWarrior.ps1 -MaxMemory 32g
 
 param(
-    [string]$MaxMemory = "32g",
+    [string]$MaxMemory = "54g",
     [string]$InitialMemory = "8g"
 )
 
