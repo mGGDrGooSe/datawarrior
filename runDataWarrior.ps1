@@ -5,7 +5,7 @@ param(
     [string]$MaxMemory = "54g",
     [string]$InitialMemory = "8g"
 )
-
+Set-Location $PSScriptRoot
 # Validate memory format
 if ($MaxMemory -notmatch '^\d+[kmg]$') {
     Write-Host "Error: MaxMemory must be in format like '8g', '512m', etc." -ForegroundColor Red
